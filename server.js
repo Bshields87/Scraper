@@ -1,5 +1,5 @@
 var express = require("express");
-
+var path = require('path')
 var mongoose = require("mongoose");
 var hbs = require('express-handlebars');
 
@@ -16,7 +16,8 @@ var PORT = 8080;
 
 // Initialize Express
 var app = express();
-
+app.engine("handlebars", hbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 
 // Parse request body as JSON
@@ -40,7 +41,7 @@ app.get("/scrape", function (req, res) {
     // Now, we grab every h2 within an article tag, and do the following:
     $(".story-text").each(function (i, element) {
       // Save an empty result object
-      var result = {};
+      var result = [{}];
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
@@ -53,18 +54,14 @@ app.get("/scrape", function (req, res) {
         .children("p")
         .text()
 
-      // result.image = $(this)
-      //   .children("a")
-      //   .children("img")
-      //   .attr("src")
-
       result.link = $(this)
         .children("a")
         .attr("href");
-
-
-
-      console.log(result)
+       
+       
+        result.push({title: result.title, summary: result.summary, link: result.link})
+        //console.log(result)
+    
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
         .then(function (dbArticle) {
@@ -101,10 +98,13 @@ app.get("/articles", function (req, res) {
 app.get("/", function(req, res) {
   db.Article.find({})
   .then(function(data){
+    //for (i=0; i < data.length; i++){ 
   var hbsObject = {
     Article: data
   }
   console.log(hbsObject)
+
+ 
     res.render("index", hbsObject)
   }).catch(function(err){
     res.json(err)

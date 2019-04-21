@@ -1,8 +1,10 @@
-<h1>Articles</h1>
+<h1 style=" text-align: center">Articles</h1>
 
-<ul>
-  {{#each Article}}
 
-    
-  {{/each}}
-</ul>
+ {{#each Article}}
+<div>
+ <p> {{ title }} </p> 
+ <p> {{ summary }}</p>
+ <a href={{ link }}> {{ link }} </a>
+ </div>
+{{/each}}
