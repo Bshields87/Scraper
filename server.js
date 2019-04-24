@@ -32,7 +32,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/NewsScraper", {
 // Routes
 
 
-app.get("/scrape", function (req, res) {
+app.get("/", function (req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://www.npr.org/").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
