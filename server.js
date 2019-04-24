@@ -81,7 +81,7 @@ app.get("/scrape", function (req, res) {
 });
 
 // Route for getting all Articles from the db
-app.get("/", function (req, res) {
+app.get("/articles", function (req, res) {
 
   // Grab every document in the Articles collection
   db.Article.find({})
